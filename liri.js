@@ -1,3 +1,4 @@
+// Variables for packages and their usage
 var keys = require('./key.js');
 var twitter = require('twitter');
 var client = new twitter({
@@ -13,6 +14,8 @@ var spot = new spotify({
 	});
 var request = require('request');
 var fs = require('fs');
+
+// Variables for node parameters
 var param1 = process.argv[2];
 var songParam = '';
 for (var i = 3; i < process.argv.length; i++) {
@@ -20,6 +23,7 @@ for (var i = 3; i < process.argv.length; i++) {
 } 
 var movieParam = process.argv.slice(3).join('+');
 
+// Checks to see what the third node parameter is
 if (param1 == 'spotify-this-song') {
 	spotMusic(songParam);
 } else if (param1 == 'movie-this') {
@@ -32,6 +36,7 @@ if (param1 == 'spotify-this-song') {
 			return console.log(err);
 		}
 		var splitData = data.split(',');
+		// Runs spotify, request or twitter functions based on what is in text file
 		if (splitData[0] == 'spotify-this-song') {
 			spotMusic(splitData[1]);
 		} else if (splitData[0] == 'movie-this') {
@@ -44,6 +49,7 @@ if (param1 == 'spotify-this-song') {
 	});
 }
 
+// Function for retrieving music info from Spotify
 function spotMusic(name) {
 	if (name == undefined) {
 		spot.search({type: 'track', query: 'The Sign'}, function(err, data) {
@@ -70,6 +76,7 @@ function spotMusic(name) {
 	}
 }
 
+// Function for retrieving my tweets
 function getTweets() {
 	client.get('statuses/user_timeline', function(err, tweets, response) {
 		if (!err) {
@@ -82,6 +89,7 @@ function getTweets() {
 	});
 }
 
+// Function for retrieving movie info from OMDB
 function findMovie(name) {
 	var title = 'http://www.omdbapi.com/?apikey=40e9cece&t=' + name;
 	if (movieParam == '') {
